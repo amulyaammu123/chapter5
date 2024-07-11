@@ -1,0 +1,18 @@
+def max_weight(weights, max_capacity):
+    # Step 1: Sort weights in descending order
+    weights.sort(reverse=True)
+    
+    # Step 2: Greedy loading
+    current_load = 0
+    for weight in weights:
+        if current_load + weight <= max_capacity:
+            current_load += weight
+        if current_load == max_capacity:
+            break
+    
+    return current_load
+
+# Example usage:
+weights = [10, 20, 30, 40, 50]
+max_capacity = 60
+print(max_weight(weights, max_capacity))  # Output: 50
