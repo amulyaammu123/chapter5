@@ -1,0 +1,20 @@
+def min_containers(weights, max_capacity):
+    num_containers = 0
+    current_load = 0
+    
+    for weight in weights:
+        if current_load + weight > max_capacity:
+            num_containers += 1
+            current_load = weight
+        else:
+            current_load += weight
+    
+    if current_load > 0:
+        num_containers += 1
+    
+    return num_containers
+
+# Example usage:
+weights = [5, 10, 15, 20, 25, 30, 35]
+max_capacity = 50
+print(min_containers(weights, max_capacity))  # Output: 4
