@@ -1,0 +1,19 @@
+def maxCoins(piles):
+    # Sort the piles in descending order
+    piles.sort(reverse=True)
+    
+    # Initialize variables to store the total coins you can collect
+    max_coins = 0
+    index = 0
+    n = len(piles) // 3
+    
+    # Iterate over every third element starting from index 1
+    for i in range(n):
+        max_coins += piles[index + 1]
+        index += 3
+    
+    return max_coins
+
+# Example:
+piles = [2, 4, 1, 2, 7, 8]
+print(maxCoins(piles))  # Output: 9
