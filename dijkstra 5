@@ -1,0 +1,33 @@
+import heapq
+
+def dijkstra(graph, source):
+    n = len(graph)
+    dist = [float('inf')] * n
+    dist[source] = 0
+    pq = [(0, source)]  # (distance, vertex)
+    
+    while pq:
+        d, u = heapq.heappop(pq)
+        
+        if d > dist[u]:
+            continue
+        
+        for v in range(n):
+            if graph[u][v] != float('inf'):  # There is an edge from u to v
+                if dist[u] + graph[u][v] < dist[v]:
+                    dist[v] = dist[u] + graph[u][v]
+                    heapq.heappush(pq, (dist[v], v))
+    
+    return dist
+
+# Example usage:
+graph = [
+    [0, 10, 3, float('inf'), float('inf')],
+    [float('inf'), 0, 1, 2, float('inf')],
+    [float('inf'), 4, 0, 8, 2],
+    [float('inf'), float('inf'), float('inf'), 0, 7],
+    [float('inf'), float('inf'), float('inf'), 9, 0]
+]
+source = 0
+result = dijkstra(graph, source)
+print(result)  # Output: [0, 7, 3, 9, 5]
