@@ -1,0 +1,61 @@
+import heapq
+
+class TreeNode:
+    def __init__(self, char=None, freq=0):
+        self.char = char
+        self.freq = freq
+        self.left = None
+        self.right = None
+    
+    def __lt__(self, other):
+        return self.freq < other.freq
+
+def generate_huffman_codes(characters, frequencies):
+    n = len(characters)
+    
+    # Step 1: Create nodes for each character and their frequency
+    nodes = []
+    for i in range(n):
+        nodes.append(TreeNode(characters[i], frequencies[i]))
+    
+    # Step 2: Build the Huffman Tree using a priority queue (min-heap)
+    heapq.heapify(nodes)
+    
+    while len(nodes) > 1:
+        # Extract the two nodes with the lowest frequencies
+        left = heapq.heappop(nodes)
+        right = heapq.heappop(nodes)
+        
+        # Create a new internal node with the sum of frequencies
+        new_node = TreeNode(freq=left.freq + right.freq)
+        new_node.left = left
+        new_node.right = right
+        
+        # Push the new node back into the heap
+        heapq.heappush(nodes, new_node)
+    
+    # Step 3: Traverse the Huffman Tree to generate Huffman Codes
+    root = nodes[0]
+    huffman_codes = {}
+    current_code = ''
+    
+    def traverse(node, code):
+        nonlocal huffman_codes
+        if node:
+            # Leaf node (character found)
+            if node.char:
+                huffman_codes[node.char] = code
+            traverse(node.left, code + '0')
+            traverse(node.right, code + '1')
+    
+    traverse(root, current_code)
+    
+    # Step 4: Format the output as required
+    result = [(char, huffman_codes[char]) for char in characters]
+    return result
+
+# Example usage:
+characters = ['a', 'b', 'c', 'd']
+frequencies = [5, 9, 12, 13]
+print(generate_huffman_codes(characters, frequencies))  
+# Output: [('a', '110'), ('b', '10'), ('c', '0'), ('d', '111')]
